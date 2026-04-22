@@ -1,0 +1,72 @@
+body {
+  margin: 0;
+  overflow: hidden;
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #000000;
+}
+.linkin-park {
+  position: relative;
+  width: 550px;
+  height: 550px;
+  background-color: #000000;
+  border-radius: 50%;
+  border: 40px solid #ffffff;
+}
+.linkin-park::before {
+  content: "";
+  position: absolute;
+  background-color: #ffffff;
+  width: 50px;
+  height: 400px;
+  left: 50%;
+  transform: skew(-25deg);
+  transform-origin: top;
+}
+.bottom {
+  position: relative;
+  background-color: #ffffff;
+  width: 40px;
+  height: 330px;
+  left: 18%;
+  transform: rotate(90deg);
+  transform-origin: bottom;
+  top: 50px;
+}
+.right {
+  position: absolute;
+  background-color: #ffffff;
+  width: 45px;
+  height: 230px;
+  left: 430px;
+  transform: skew(25deg);
+  transform-origin: bottom;
+  top: 170px;
+}
+.touch-line {
+  position: absolute;
+  background-color: #ffffff;
+  width: 45px;
+  height: 380px;
+  left: 300px;
+  transform: skew(-25deg);
+  transform-origin: top;
+  top: 170px;
+  box-shadow:
+    45px 250px 0 0 #000000,
+    -149px -250px 0 0 #000000;
+}
+.triangle {
+  position: relative;
+  width: 0;
+  height: 0;
+  border-width: 0 35px 69px 35px;
+  border-color: transparent transparent #ffffff transparent;
+  border-style: solid;
+  left: 298.5px;
+  bottom: 226px;
+}
