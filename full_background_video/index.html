@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>全屏视频背景</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="video-container">
+        <!-- 
+            playsinline: 适配 iOS 移动端，防止视频自动跳出全屏播放器
+            autoplay: 自动播放
+            muted: 静音 (现代浏览器自动播放的必要条件)
+            loop: 循环播放
+        -->
+        <video autoplay muted loop playsinline id="bg-video">
+            <source src="https://media.w3.org/2010/05/sintel/trailer.mp4" type="video/mp4">
+            您的浏览器不支持 HTML5 视频。
+        </video>
+    </div>
+
+    <div class="content">
+        <h1>正在播放全屏背景视频</h1>
+        <p>适配移动端，无滚动条</p>
+    </div>
+
+    <script>
+        // 自动播放尝试 (某些移动设备可能拦截，需要通过用户触摸激活)
+        document.addEventListener('touchstart', function() {
+            var video = document.getElementById('bg-video');
+            if (video.paused) {
+                video.play();
+            }
+        }, { once: true });
+    </script>
+</body>
+</html>

@@ -1,72 +1,250 @@
+:root {
+  --logo-size: 550px;
+  --scale: 1;
+  --logo-color: #ffffff;
+  --dissolve-delay: 0.22s;
+  --dissolve-duration: 1.35s;
+}
+
+@media (max-width: 600px) {
+  :root {
+    --logo-size: 150px;
+    --scale: calc(150 / 550);
+  }
+}
+
 body {
   margin: 0;
   overflow: hidden;
   position: relative;
   width: 100vw;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #000000;
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle at center, rgba(255, 255, 255, 0.1), transparent 30%),
+    radial-gradient(circle at center, #141414 0%, #050505 48%, #000000 100%);
 }
-.linkin-park {
-  position: relative;
-  width: 550px;
-  height: 550px;
-  background-color: #000000;
-  border-radius: 50%;
-  border: 40px solid #ffffff;
+
+.logo-stage {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100dvh;
+  isolation: isolate;
 }
-.linkin-park::before {
+
+.logo-stage::after {
   content: "";
   position: absolute;
-  background-color: #ffffff;
-  width: 50px;
-  height: 400px;
-  left: 50%;
-  transform: skew(-25deg);
-  transform-origin: top;
+  inset: 50% auto auto 50%;
+  width: calc(var(--logo-size) * 0.9);
+  height: calc(var(--logo-size) * 0.9);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.2), transparent 68%);
+  transform: translate(-50%, -50%);
+  filter: blur(38px);
+  opacity: 0.45;
+  animation: haze-fade var(--dissolve-duration) ease-out var(--dissolve-delay) forwards;
 }
+
+.linkin-park {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 550px;
+  height: 550px;
+  transform: translate(-50%, -50%) scale(var(--scale));
+  transform-origin: center;
+  flex-shrink: 0;
+  animation: logo-glow var(--dissolve-duration) ease-out var(--dissolve-delay) forwards;
+}
+
+.logo-piece {
+  position: absolute;
+  background-color: var(--logo-color);
+  backface-visibility: hidden;
+  transform: var(--base-transform, none);
+  transform-origin: var(--origin, center);
+  animation-duration: var(--dissolve-duration);
+  animation-delay: var(--piece-delay, var(--dissolve-delay));
+  animation-fill-mode: forwards;
+  animation-timing-function: cubic-bezier(0.22, 0.72, 0.18, 1);
+  will-change: transform, opacity, filter;
+}
+
+.logo-ring {
+  top: 0;
+  left: 0;
+  width: 550px;
+  height: 550px;
+  border-radius: 50%;
+  border: 40px solid var(--logo-color);
+  background: transparent;
+  --piece-delay: calc(var(--dissolve-delay) + 0.04s);
+  animation-name: smoky-dissolve;
+}
+
+.center-line {
+  width: 50px;
+  height: 392px;
+  left: 50%;
+  top: 8px;
+  --base-transform: skew(-25deg);
+  --origin: top;
+  --piece-delay: calc(var(--dissolve-delay) + 0.12s);
+  animation-name: smoky-dissolve;
+}
+
 .bottom {
-  position: relative;
-  background-color: #ffffff;
   width: 40px;
   height: 330px;
   left: 18%;
-  transform: rotate(90deg);
-  transform-origin: bottom;
   top: 50px;
+  --base-transform: rotate(90deg);
+  --origin: bottom;
+  --piece-delay: calc(var(--dissolve-delay) + 0.08s);
+  animation-name: smoky-dissolve-mirror;
 }
+
 .right {
-  position: absolute;
-  background-color: #ffffff;
   width: 45px;
   height: 230px;
   left: 430px;
-  transform: skew(25deg);
-  transform-origin: bottom;
   top: 170px;
+  --base-transform: skew(25deg);
+  --origin: bottom;
+  --piece-delay: calc(var(--dissolve-delay) + 0.16s);
+  animation-name: smoky-dissolve;
 }
+
 .touch-line {
-  position: absolute;
-  background-color: #ffffff;
   width: 45px;
   height: 380px;
   left: 300px;
-  transform: skew(-25deg);
-  transform-origin: top;
   top: 170px;
+  --base-transform: skew(-25deg);
+  --origin: top;
+  --piece-delay: calc(var(--dissolve-delay) + 0.22s);
+  animation-name: smoky-dissolve-mirror;
   box-shadow:
     45px 250px 0 0 #000000,
-    -149px -250px 0 0 #000000;
+    -146px -250px 0 0 #000000,
+    0 0 0 rgba(255, 255, 255, 0);
 }
+
 .triangle {
-  position: relative;
   width: 0;
   height: 0;
   border-width: 0 35px 69px 35px;
-  border-color: transparent transparent #ffffff transparent;
+  border-color: transparent transparent var(--logo-color) transparent;
   border-style: solid;
   left: 298.5px;
-  bottom: 226px;
+  top: 104px;
+  background: transparent;
+  --piece-delay: calc(var(--dissolve-delay) + 0.28s);
+  animation-name: smoky-dissolve;
+}
+
+@keyframes logo-glow {
+  0%,
+  20% {
+    opacity: 1;
+    filter: drop-shadow(0 0 0 rgba(255, 255, 255, 0));
+  }
+
+  60% {
+    opacity: 1;
+    filter: drop-shadow(0 0 26px rgba(255, 255, 255, 0.28));
+  }
+
+  100% {
+    opacity: 0;
+    filter: blur(12px) drop-shadow(0 0 40px rgba(255, 255, 255, 0.24));
+  }
+}
+
+@keyframes smoky-dissolve {
+  0%,
+  18% {
+    opacity: 1;
+    transform: var(--base-transform, none);
+    filter: blur(0);
+  }
+
+  58% {
+    opacity: 1;
+    transform: var(--base-transform, none);
+    filter: blur(1px);
+  }
+
+  100% {
+    opacity: 0;
+    transform:
+      var(--base-transform, none)
+      translate3d(90px, -70px, 0)
+      rotate(-24deg)
+      skewX(46deg)
+      scale(1.16);
+    filter: blur(22px);
+  }
+}
+
+@keyframes smoky-dissolve-mirror {
+  0%,
+  18% {
+    opacity: 1;
+    transform: var(--base-transform, none);
+    filter: blur(0);
+  }
+
+  58% {
+    opacity: 1;
+    transform: var(--base-transform, none);
+    filter: blur(1px);
+  }
+
+  100% {
+    opacity: 0;
+    transform:
+      var(--base-transform, none)
+      translate3d(-84px, -64px, 0)
+      rotate(18deg)
+      skewX(-52deg)
+      scale(1.14);
+    filter: blur(20px);
+  }
+}
+
+@keyframes haze-fade {
+  0%,
+  25% {
+    opacity: 0.35;
+    transform: translate(-50%, -50%) scale(0.9);
+  }
+
+  60% {
+    opacity: 0.55;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -58%) scale(1.18);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo-stage::after,
+  .linkin-park,
+  .logo-piece {
+    animation: none;
+    filter: none;
+    opacity: 1;
+    transform: var(--base-transform, none);
+  }
+
+  .linkin-park {
+    transform: translate(-50%, -50%) scale(var(--scale));
+  }
 }
