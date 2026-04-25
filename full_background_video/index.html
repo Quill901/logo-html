@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>全屏视频背景</title>
+    <title>SINTEL</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -21,10 +21,16 @@
         </video>
     </div>
 
-    <div class="content">
+    <!-- <div class="content">
         <h1>正在播放全屏背景视频</h1>
         <p>适配移动端，无滚动条</p>
-    </div>
+    </div> -->
+
+    <button id="music-btn" class="music-control-btn">
+        <svg viewBox="0 0 24 24" width="40" height="40" fill="currentColor">
+            <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+        </svg>
+    </button>
 
     <script>
         // 自动播放尝试 (某些移动设备可能拦截，需要通过用户触摸激活)
@@ -34,6 +40,27 @@
                 video.play();
             }
         }, { once: true });
+
+        const musicBtn = document.getElementById('music-btn');
+        const video = document.getElementById('bg-video');
+
+        musicBtn.addEventListener('click', () => {
+            // 1. 解除静音并尝试播放音轨
+            video.muted = false;
+            
+            // 如果视频因为某些策略暂停了，强制播放
+            video.play().catch(error => {
+                console.log("播放失败，请检查视频源或浏览器策略:", error);
+            });
+
+            // 2. 添加消失动画类
+            musicBtn.classList.add('fade-out');
+            
+            // 3. (可选) 动画结束后彻底移除 DOM 元素
+            setTimeout(() => {
+                musicBtn.remove();
+            }, 1500); // 时间与 CSS 中的 1.5s 对应
+        });
     </script>
 </body>
 </html>

@@ -6,6 +6,13 @@
   --dissolve-duration: 1.35s;
 }
 
+@media (min-width: 601px) {
+  :root {
+    /* 桌面端比例：假设你希望在桌面端也小一点 */
+    --scale: 0.6; 
+  }
+}
+
 @media (max-width: 600px) {
   :root {
     --logo-size: 150px;
