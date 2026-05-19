@@ -2,8 +2,9 @@
   --logo-size: 550px;
   --scale: 1;
   --logo-color: #ffffff;
-  --dissolve-delay: 0.22s;
-  --dissolve-duration: 1.35s;
+  --dissolve-delay: 0.36s;
+  --dissolve-duration: 1.12s;
+  --button-delay: calc(var(--dissolve-delay) + 0.42s);
 }
 
 @media (min-width: 601px) {
@@ -33,12 +34,41 @@ body {
     radial-gradient(circle at center, #141414 0%, #050505 48%, #000000 100%);
 }
 
+.video-container {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100dvh;
+  z-index: 0;
+  overflow: hidden;
+  background-color: #000000;
+}
+
+#bg-video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transform: scale(1.04);
+  transition:
+    opacity 0.8s ease,
+    transform 1.4s ease;
+}
+
+body.is-video-ready #bg-video {
+  opacity: 1;
+  transform: scale(1);
+}
+
 .logo-stage {
   position: fixed;
   inset: 0;
   width: 100vw;
   height: 100dvh;
   isolation: isolate;
+  z-index: 2;
+  pointer-events: none;
 }
 
 .logo-stage::after {
@@ -52,6 +82,9 @@ body {
   transform: translate(-50%, -50%);
   filter: blur(38px);
   opacity: 0.45;
+}
+
+body.is-video-ready .logo-stage::after {
   animation: haze-fade var(--dissolve-duration) ease-out var(--dissolve-delay) forwards;
 }
 
@@ -64,6 +97,9 @@ body {
   transform: translate(-50%, -50%) scale(var(--scale));
   transform-origin: center;
   flex-shrink: 0;
+}
+
+body.is-video-ready .linkin-park {
   animation: logo-glow var(--dissolve-duration) ease-out var(--dissolve-delay) forwards;
 }
 
@@ -73,11 +109,26 @@ body {
   backface-visibility: hidden;
   transform: var(--base-transform, none);
   transform-origin: var(--origin, center);
+  --drift-x: 14px;
+  --drift-y: -18px;
+  --drift-rotate: -8deg;
+  --drift-skew: 9deg;
+  --drift-scale: 1.05;
+  --dissolve-x: 128px;
+  --dissolve-y: -150px;
+  --dissolve-rotate: -34deg;
+  --dissolve-skew: 42deg;
+  --dissolve-scale: 1.2;
+  --dissolve-blur: 28px;
   animation-duration: var(--dissolve-duration);
   animation-delay: var(--piece-delay, var(--dissolve-delay));
   animation-fill-mode: forwards;
-  animation-timing-function: cubic-bezier(0.22, 0.72, 0.18, 1);
+  animation-timing-function: cubic-bezier(0.16, 0.74, 0.24, 1);
   will-change: transform, opacity, filter;
+}
+
+body.is-video-ready .logo-piece {
+  animation-name: smoky-dissolve;
 }
 
 .logo-ring {
@@ -89,7 +140,17 @@ body {
   border: 40px solid var(--logo-color);
   background: transparent;
   --piece-delay: calc(var(--dissolve-delay) + 0.04s);
-  animation-name: smoky-dissolve;
+  --drift-x: -14px;
+  --drift-y: -18px;
+  --drift-rotate: 5deg;
+  --drift-skew: 0deg;
+  --drift-scale: 1.04;
+  --dissolve-x: -54px;
+  --dissolve-y: -112px;
+  --dissolve-rotate: 18deg;
+  --dissolve-skew: 0deg;
+  --dissolve-scale: 1.24;
+  --dissolve-blur: 26px;
 }
 
 .center-line {
@@ -100,7 +161,17 @@ body {
   --base-transform: skew(-25deg);
   --origin: top;
   --piece-delay: calc(var(--dissolve-delay) + 0.12s);
-  animation-name: smoky-dissolve;
+  --drift-x: 18px;
+  --drift-y: -28px;
+  --drift-rotate: -8deg;
+  --drift-skew: 5deg;
+  --drift-scale: 1.05;
+  --dissolve-x: 122px;
+  --dissolve-y: -188px;
+  --dissolve-rotate: -32deg;
+  --dissolve-skew: 36deg;
+  --dissolve-scale: 1.2;
+  --dissolve-blur: 32px;
 }
 
 .bottom {
@@ -111,7 +182,17 @@ body {
   --base-transform: rotate(90deg);
   --origin: bottom;
   --piece-delay: calc(var(--dissolve-delay) + 0.08s);
-  animation-name: smoky-dissolve-mirror;
+  --drift-x: -24px;
+  --drift-y: -12px;
+  --drift-rotate: 10deg;
+  --drift-skew: -6deg;
+  --drift-scale: 1.04;
+  --dissolve-x: -158px;
+  --dissolve-y: -90px;
+  --dissolve-rotate: 34deg;
+  --dissolve-skew: -34deg;
+  --dissolve-scale: 1.18;
+  --dissolve-blur: 29px;
 }
 
 .right {
@@ -122,7 +203,17 @@ body {
   --base-transform: skew(25deg);
   --origin: bottom;
   --piece-delay: calc(var(--dissolve-delay) + 0.16s);
-  animation-name: smoky-dissolve;
+  --drift-x: 26px;
+  --drift-y: -18px;
+  --drift-rotate: 8deg;
+  --drift-skew: 7deg;
+  --drift-scale: 1.05;
+  --dissolve-x: 178px;
+  --dissolve-y: -126px;
+  --dissolve-rotate: 38deg;
+  --dissolve-skew: 31deg;
+  --dissolve-scale: 1.2;
+  --dissolve-blur: 31px;
 }
 
 .touch-line {
@@ -133,7 +224,17 @@ body {
   --base-transform: skew(-25deg);
   --origin: top;
   --piece-delay: calc(var(--dissolve-delay) + 0.22s);
-  animation-name: smoky-dissolve-mirror;
+  --drift-x: -18px;
+  --drift-y: -34px;
+  --drift-rotate: -9deg;
+  --drift-skew: -5deg;
+  --drift-scale: 1.05;
+  --dissolve-x: -112px;
+  --dissolve-y: -214px;
+  --dissolve-rotate: -30deg;
+  --dissolve-skew: -32deg;
+  --dissolve-scale: 1.21;
+  --dissolve-blur: 34px;
   box-shadow:
     45px 250px 0 0 #000000,
     -146px -250px 0 0 #000000,
@@ -150,76 +251,140 @@ body {
   top: 104px;
   background: transparent;
   --piece-delay: calc(var(--dissolve-delay) + 0.28s);
-  animation-name: smoky-dissolve;
+  --drift-x: 12px;
+  --drift-y: -38px;
+  --drift-rotate: -7deg;
+  --drift-skew: 3deg;
+  --drift-scale: 1.06;
+  --dissolve-x: 72px;
+  --dissolve-y: -234px;
+  --dissolve-rotate: -26deg;
+  --dissolve-skew: 18deg;
+  --dissolve-scale: 1.17;
+  --dissolve-blur: 36px;
+}
+
+.music-control-btn {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 70px;
+  height: 70px;
+  padding: 0;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.15);
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(0.86);
+  transition:
+    opacity 1s ease,
+    visibility 1s ease,
+    transform 0.5s ease,
+    background 0.3s ease;
+}
+
+body.is-video-ready .music-control-btn {
+  animation: music-button-reveal 0.9s ease var(--button-delay) forwards;
+}
+
+.music-control-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+body.is-video-ready .music-control-btn.fade-out,
+.music-control-btn.fade-out {
+  animation: none;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(0.82);
+}
+
+@keyframes music-button-reveal {
+  0% {
+    opacity: 0;
+    visibility: visible;
+    pointer-events: none;
+    transform: translate(-50%, -50%) scale(0.86);
+  }
+
+  100% {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translate(-50%, -50%) scale(1);
+  }
 }
 
 @keyframes logo-glow {
   0%,
   20% {
     opacity: 1;
+    transform: translate(-50%, -50%) scale(var(--scale)) scale(1);
     filter: drop-shadow(0 0 0 rgba(255, 255, 255, 0));
   }
 
   60% {
     opacity: 1;
+    transform: translate(-50%, -50%) scale(var(--scale)) scale(1.045);
     filter: drop-shadow(0 0 26px rgba(255, 255, 255, 0.28));
   }
 
   100% {
     opacity: 0;
+    transform: translate(-50%, -50%) scale(var(--scale)) scale(1.13);
     filter: blur(12px) drop-shadow(0 0 40px rgba(255, 255, 255, 0.24));
   }
 }
 
 @keyframes smoky-dissolve {
   0%,
-  18% {
+  24% {
     opacity: 1;
     transform: var(--base-transform, none);
-    filter: blur(0);
+    filter: blur(0) brightness(1);
   }
 
-  58% {
-    opacity: 1;
-    transform: var(--base-transform, none);
-    filter: blur(1px);
+  54% {
+    opacity: 0.92;
+    transform:
+      var(--base-transform, none)
+      translate3d(1px, -2px, 0)
+      scale(1.01);
+    filter: blur(0.8px) brightness(1.25);
+  }
+
+  72% {
+    opacity: 0.58;
+    transform:
+      var(--base-transform, none)
+      translate3d(var(--drift-x), var(--drift-y), 0)
+      rotate(var(--drift-rotate))
+      skewX(var(--drift-skew))
+      scale(var(--drift-scale));
+    filter: blur(7px) brightness(1.36);
   }
 
   100% {
     opacity: 0;
     transform:
       var(--base-transform, none)
-      translate3d(90px, -70px, 0)
-      rotate(-24deg)
-      skewX(46deg)
-      scale(1.16);
-    filter: blur(22px);
-  }
-}
-
-@keyframes smoky-dissolve-mirror {
-  0%,
-  18% {
-    opacity: 1;
-    transform: var(--base-transform, none);
-    filter: blur(0);
-  }
-
-  58% {
-    opacity: 1;
-    transform: var(--base-transform, none);
-    filter: blur(1px);
-  }
-
-  100% {
-    opacity: 0;
-    transform:
-      var(--base-transform, none)
-      translate3d(-84px, -64px, 0)
-      rotate(18deg)
-      skewX(-52deg)
-      scale(1.14);
-    filter: blur(20px);
+      translate3d(var(--dissolve-x), var(--dissolve-y), 0)
+      rotate(var(--dissolve-rotate))
+      skewX(var(--dissolve-skew))
+      scale(var(--dissolve-scale));
+    filter: blur(var(--dissolve-blur)) brightness(1.08);
   }
 }
 
@@ -244,14 +409,25 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .logo-stage::after,
   .linkin-park,
-  .logo-piece {
+  .logo-piece,
+  .music-control-btn {
     animation: none;
     filter: none;
-    opacity: 1;
     transform: var(--base-transform, none);
   }
 
   .linkin-park {
     transform: translate(-50%, -50%) scale(var(--scale));
+  }
+
+  body.is-video-ready .logo-stage {
+    opacity: 0;
+  }
+
+  body.is-video-ready .music-control-btn {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translate(-50%, -50%) scale(1);
   }
 }

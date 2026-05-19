@@ -5,9 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>LP</title>
     <link rel="stylesheet" href="style.css" />
-    <meta http-equiv="refresh" content="2;url=full_background_video/index.html" />
   </head>
   <body>
+    <div class="video-container">
+      <video autoplay muted loop playsinline id="bg-video">
+        <source src="https://media.w3.org/2010/05/sintel/trailer.mp4" type="video/mp4" />
+        您的浏览器不支持 HTML5 视频。
+      </video>
+    </div>
+
     <div class="logo-stage">
       <div class="linkin-park" aria-hidden="true">
         <div class="logo-ring logo-piece"></div>
@@ -18,8 +24,53 @@
         <div class="triangle logo-piece"></div>
       </div>
     </div>
+
+    <button id="music-btn" class="music-control-btn" type="button" aria-label="播放声音">
+      <svg viewBox="0 0 24 24" width="40" height="40" fill="currentColor" aria-hidden="true">
+        <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z" />
+      </svg>
+    </button>
+
     <script>
-      
+      const video = document.getElementById("bg-video");
+      const musicBtn = document.getElementById("music-btn");
+      let isReady = false;
+
+      const enterVideo = () => {
+        if (isReady) {
+          return;
+        }
+
+        isReady = true;
+        video.play().catch(() => {});
+        document.body.classList.add("is-video-ready");
+      };
+
+      video.addEventListener("canplay", enterVideo, { once: true });
+
+      if (video.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA) {
+        enterVideo();
+      }
+
+      document.addEventListener(
+        "touchstart",
+        () => {
+          if (video.paused) {
+            video.play().catch(() => {});
+          }
+        },
+        { once: true },
+      );
+
+      musicBtn.addEventListener("click", () => {
+        video.muted = false;
+        video.play().catch(() => {});
+        musicBtn.classList.add("fade-out");
+
+        setTimeout(() => {
+          musicBtn.remove();
+        }, 1200);
+      });
     </script>
   </body>
 </html>
